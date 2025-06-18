@@ -4,12 +4,18 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'app'
-version = '0.0.1-SNAPSHOT'
+group = 'com.whale0928'
+version = '1.0.0'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
     }
 }
 
@@ -18,11 +24,40 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
+    // ===== Spring Boot Core =====
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    //excel
+    implementation 'org.apache.poi:poi:5.4.1'                    // 기본 POI
+    implementation 'org.apache.poi:poi-ooxml:5.4.1'              // Excel 2007+ (.xlsx)
+    implementation 'org.apache.poi:poi-ooxml-lite:5.4.1'         // 경량화 버전
+    implementation 'org.apache.poi:poi-scratchpad:5.4.1'         // Excel 97-2003 (.xls)
+
+    //csv
+    implementation 'org.apache.commons:commons-csv:1.14.0'       // CSV 파싱/생성
+
+    implementation 'org.apache.commons:commons-lang3:3.17.0'     // 유틸리티 함수
+    implementation 'commons-io:commons-io:2.18.0'                // 파일 I/O 유틸
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core'
+    testImplementation 'org.mockito:mockito-core'
+
+    testImplementation 'org.openjdk.jmh:jmh-core:1.37'
+    testAnnotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
+
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+// ===== Test Configuration =====
 tasks.named('test') {
     useJUnitPlatform()
 }
